@@ -1,5 +1,5 @@
 body {
-	background-image: url("http://cdn1.vox-cdn.com/assets/4229567/game-of-thrones-poster_85627-1920x1200.jpg");
+	background-image: url("http://1v1d1e1lmiki1lgcvx32p49h8fe.wpengine.netdna-cdn.com/wp-content/uploads/2017/07/game-of-thrones-960x540.jpg");
 	padding: 10px;
 	margin: 10px;
 	color: #ccc;
@@ -7,25 +7,44 @@ body {
 	font-size: 18px;
 }
 
-.container-fluid, #timer {
+.container-fluid {
 	background-image: url("http://www.ekohanchi.com/Old_site/WebDesigns/redsilk.jpg");
-	color: #ccc;
+	text-align: center;
+	font-size: 28px;
+	font-family: "JoseFin Sans", "Indie Flower", sans-serif;;
 	border: 5px outset gray;
 	border-radius: 10px;
-	margin: 10px;
-	text-align: center;
 }
 
 .container {
 	background-image: url("http://www.ekohanchi.com/Old_site/WebDesigns/redsilk.jpg");
 	color: #ccc;
+	padding: 10px;
 	border: 5px outset gray;
 	border-radius: 10px;
 	margin: 10px;
 	text-align: left;
 }
 
-#submit {
+#timer {
+	padding: 15px;
+	font-weight: bold;
+	font-size: 28px;
+	background-image: url("http://www.ekohanchi.com/Old_site/WebDesigns/redsilk.jpg");
+	color: #ccc;
 	padding: 25px;
+	border: 5px outset gray;
+	border-radius: 10px;
+	margin: 10px;
+	text-align: center;
+}
+
+#play, #submit {
+	color: maroon;
+	font-size: 18px;
+	padding: 25px;
+	border: 5px outset gray;
+	border-radius: 10px;
+	margin: 10px;
 	text-align: center;
 }

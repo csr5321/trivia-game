@@ -11,14 +11,16 @@ window.onload = function() {
     $('#submit').show();
     $('#play').hide();
     timer.start();
+
   })
+
     var intervalId;
     var clockRunning = false;
     var timer = {
-      time: 60,
+      time: 3600,
 
       reset: function () {
-        timer.time = 0;
+        timer.time = 3600;
       },
 
       start: function() {
@@ -33,23 +35,29 @@ window.onload = function() {
 
       count: function() {
         timer.time--;
+
         displayTime = timer.timeConvert(timer.time);
         $('#timer').html(displayTime);
+
+        if (timer.time === 00) {
+          timer.stop();
+          timer.reset();
+          $('#timer').html("Too Slow! Play Again.")
+          $('#play').show();
+          $('#quizCard').hide();
+          $('#submit').hide();
+        }
       },
 
       timeConvert: function(t) {
         var seconds = Math.floor(t/60);
         var fracSeconds = t - (seconds * 60);
           if (fracSeconds < 10) {
-            seconds = "0" + seconds;
+            fracSeconds = "0" + fracSeconds;
           }
 
           if (seconds === 0) {
             seconds = "00";
-          }
-
-          else if (seconds < 10) {
-            seconds = "0" + seconds;
           }
 
           return seconds + ":" + fracSeconds;
@@ -119,7 +127,7 @@ window.onload = function() {
             for (var i = 0; i < quiz.characters.length; i++) {
                 question = quiz.characters[i].name + " dies this season."
                 // console.log("Question #" + [i + 1] + ": " + question);
-                $('#quizCard').append("<div><b>" + [i + 1] + ". " + question + "</b></div><ul><input class='answer' type='radio' name='q" + [i + 1] + " value='1'><label id='trueString'>True</label></ul><ul><input class='answer' type='radio' name='q" + [i + 1] + " value='0'><label id='falseString'>False</label></ul>");
+                $('#quizCard').append("<div><b>" + [i + 1] + ". " + question + "</b></div><ul><input class='answer' type='radio' name='q" + [i + 1] + "' value='1'><label class='trueString'>True</label></ul><ul><input class='answer' type='radio' name='q" + [i + 1] + "' value='0'><label class='falseString'>False</label></ul>");
 
             }
 
@@ -127,11 +135,11 @@ window.onload = function() {
 
         scoreQ: function() {
             for (var j = 0; j < quiz.characters.length; j++) {
-                if (quiz.characters[j].fate == $('.answer').val()) {
+              var input = $('.answer').val();
+                if (quiz.characters[j].fate == input ) {
                     correctAnswer++;
 
                 } else {
-                    // if (quiz.characters[j].fate !== $('.answer').val())
                     incorrectAnswer++;
 
                 }
@@ -139,19 +147,19 @@ window.onload = function() {
 
         },
 
-        timer: function () {
-
-        }
 
     }
 
     quiz.populateQ(question);
     $('#submit').on("click", function() {
     quiz.scoreQ();
-    quiz.timer();
+    timer.stop();
+    timer.reset();
+
 
     console.log("There are " + correctAnswer + " correct answers.")
     console.log("There are " + incorrectAnswer + " incorrect answers.")
+    $('#score').html("You answered " + correctAnswer + "/" + quiz.characters.length + " questions correctly. I won't spoil it for you!")
 
     });
 
