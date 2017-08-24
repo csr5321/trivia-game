@@ -1,0 +1,31 @@
+body {
+	background-image: url("http://cdn1.vox-cdn.com/assets/4229567/game-of-thrones-poster_85627-1920x1200.jpg");
+	padding: 10px;
+	margin: 10px;
+	color: #ccc;
+	font-family: "JoseFin Sans", "Indie Flower", sans-serif;
+	font-size: 18px;
+}
+
+.container-fluid, #timer {
+	background-image: url("http://www.ekohanchi.com/Old_site/WebDesigns/redsilk.jpg");
+	color: #ccc;
+	border: 5px outset gray;
+	border-radius: 10px;
+	margin: 10px;
+	text-align: center;
+}
+
+.container {
+	background-image: url("http://www.ekohanchi.com/Old_site/WebDesigns/redsilk.jpg");
+	color: #ccc;
+	border: 5px outset gray;
+	border-radius: 10px;
+	margin: 10px;
+	text-align: left;
+}
+
+#submit {
+	padding: 25px;
+	text-align: center;
+}
