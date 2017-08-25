@@ -167,8 +167,9 @@ window.onload = function() {
         $('#play').show();
         $('#quizCard').hide();
         quiz.scoreQ();
-
         $('#score').html("You answered " + correctAnswer + "/" + quiz.characters.length + " questions correctly. No spoilers.")
+        correctAnswer = 0;
+        incorrectAnswer = 0;
 
     });
 
