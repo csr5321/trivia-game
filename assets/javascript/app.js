@@ -1,176 +1,142 @@
 window.onload = function() {
+    const QUIZ_TIME = 60; // 60 seconds for quiz
+    
+    const $quizCard = $('#quizCard');
+    const $score = $('#score');
+    const $submit = $('#submit');
+    const $play = $('#play');
+    const $timer = $('#timer');
 
-    $('#quizCard').hide();
-    $('#score').hide();
-    $('#submit').hide();
-    $('#play').show();
+    // Initial state
+    $quizCard.hide();
+    $score.hide();
+    $submit.hide();
+    $play.show();
 
-    $('#play').on("click", function() {
-        $('#quizCard').show();
-        $('#score').show();
-        $('#submit').show();
-        $('#play').hide();
-        timer.reset();
-        timer.start();
-        // could not clear inputs on the reset 
-        //suspect from the way i built it in quizCard. 
-        //Bad coding rabbithole.  
-        $("input[type=radio], textarea").val(""); 
+    // Timer implementation
+    const timer = {
+        time: QUIZ_TIME,
+        intervalId: null,
+        isRunning: false,
 
-    })
-
-    var intervalId;
-    var clockRunning = false;
-    var timer = {
-        time: 3600,
-
-        reset: function() {
-            timer.time = 3600;
-        },
-
-        start: function() {
-            if (!clockRunning) {
-                intervalId = setInterval(timer.count, 10)
+        reset() {
+            this.time = QUIZ_TIME;
+            this.isRunning = false;
+            if (this.intervalId) {
+                clearInterval(this.intervalId);
             }
         },
 
-        stop: function() {
-            clearInterval(intervalId);
-        },
-
-        count: function() {
-            timer.time--;
-
-            displayTime = timer.timeConvert(timer.time);
-            $('#timer').html(displayTime);
-
-            if (timer.time === 00) {
-                timer.stop();
-                timer.reset();
-                $('#timer').html("Too Slow! Play Again.")
-                $('#play').show();
-                $('#quizCard').hide();
-                $('#submit').hide();
+        start() {
+            if (!this.isRunning) {
+                this.isRunning = true;
+                this.intervalId = setInterval(() => this.count(), 1000);
             }
         },
 
-        timeConvert: function(t) {
-            var seconds = Math.floor(t / 60);
-            var fracSeconds = t - (seconds * 60);
-            if (fracSeconds < 10) {
-                fracSeconds = "0" + fracSeconds;
-            }
+        stop() {
+            this.isRunning = false;
+            clearInterval(this.intervalId);
+        },
 
-            if (seconds === 0) {
-                seconds = "00";
-            }
+        count() {
+            this.time--;
+            const displayTime = this.timeConvert(this.time);
+            $timer.html(displayTime);
 
-            return seconds + ":" + fracSeconds;
+            if (this.time <= 0) {
+                this.stop();
+                this.reset();
+                $timer.html("Time's Up! Play Again.");
+                endGame();
+            }
+        },
+
+        timeConvert(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
-    }
+    };
 
-    var question;
-    var correctAnswer = 0;
-    var incorrectAnswer = 0;
-    var score;
-    var quiz = {
-
-        characters: [{
-                name: "Arya Stark",
-                fate: 1
-            },
-
-            {
-                name: "Daenerys Targaryen",
-                fate: 1
-            },
-
-            {
-                name: "Jon Snow",
-                fate: 0
-            },
-
-            {
-                name: "Sansa Stark",
-                fate: 0
-
-            },
-
-            {
-                name: "Brandon Stark",
-                fate: 0
-            },
-
-            {
-                name: "Cersei Lannister",
-                fate: 0
-            },
-
-            {
-                name: "Jamie Lannister",
-                fate: 1
-            },
-
-            {
-                name: "Tyrion Lannister",
-                fate: 0
-            },
-
-            {
-                name: "Petyr Baelish",
-                fate: 0
-            },
-
-            {
-                name: "The Hound",
-                fate: 1
-            }
+    const quiz = {
+        characters: [
+            { name: "Arya Stark", fate: 1 },
+            { name: "Daenerys Targaryen", fate: 1 },
+            { name: "Jon Snow", fate: 0 },
+            { name: "Sansa Stark", fate: 0 },
+            { name: "Brandon Stark", fate: 0 },
+            { name: "Cersei Lannister", fate: 0 },
+            { name: "Jamie Lannister", fate: 1 },
+            { name: "Tyrion Lannister", fate: 0 },
+            { name: "Petyr Baelish", fate: 0 },
+            { name: "The Hound", fate: 1 }
         ],
 
-        populateQ: function() {
-            for (var i = 0; i < quiz.characters.length; i++) {
-                question = quiz.characters[i].name + " dies this season."
-                // console.log("Question #" + [i + 1] + ": " + question);
-                $('#quizCard').append("<div><b>" + [i + 1] + ". " + question + "</b></div><ul><input class='answer' id='select' type='radio' name='q" + [i + 1] + "' value='1'><label class='trueString'>True</label></ul><ul><input class='answer' id='select' type='radio' name='q" + [i + 1] + "' value='0'><label class='falseString'>False</label></ul>");
+        populateQuestions() {
+    $quizCard.empty();
+    
+    this.characters.forEach((character, index) => {
+        const questionHtml = `
+            <div class="question">
+                <p class="mb-2"><strong>${index + 1}. ${character.name} dies this season.</strong></p>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q${index}" value="1" id="q${index}true">
+                    <label class="form-check-label" for="q${index}true">
+                        True
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="q${index}" value="0" id="q${index}false">
+                    <label class="form-check-label" for="q${index}false">
+                        False
+                    </label>
+                </div>
+            </div>
+        `;
+        $quizCard.append(questionHtml);
+    });
+},
 
-            }
-
-        },
-
-        scoreQ: function() {
-            debugger
-            for (var j = 0; j < quiz.characters.length; j++)  {
-                if (quiz.characters[j].fate === $("input[type='radio']").val(0)) {
-                    correctAnswer++;
-
-                } else if (quiz.characters[j].fate === 0) {
-                    correctAnswer++;
-
-                } else {
-                    incorrectAnswer++;
-
+        calculateScore() {
+            let correct = 0;
+            
+            this.characters.forEach((character, index) => {
+                const selected = $(`input[name="q${index}"]:checked`).val();
+                if (selected === character.fate.toString()) {
+                    correct++;
                 }
-
-            }
-            console.log("There are " + correctAnswer + " correct answers.")
-            console.log("There are " + incorrectAnswer + " incorrect answers.")
-
+            });
+            
+            return correct;
         }
+    };
 
-
+    // Update show/hide methods to use Bootstrap classes
+    function startGame() {
+        quiz.populateQuestions();
+        $quizCard.removeClass('d-none');
+        $score.removeClass('d-none');
+        $submit.removeClass('d-none');
+        $play.addClass('d-none');
+        timer.reset();
+        timer.start();
     }
 
-    quiz.populateQ(question);
-
-    $('#submit').on("click", function() {
+    function endGame() {
+        $play.removeClass('d-none');
+        $quizCard.addClass('d-none');
+        $submit.addClass('d-none');
         timer.stop();
-        $('#play').show();
-        $('#quizCard').hide();
-        quiz.scoreQ();
-        $('#score').html("You answered " + correctAnswer + "/" + quiz.characters.length + " questions correctly. No spoilers.")
-        correctAnswer = 0;
-        incorrectAnswer = 0;
+    }
 
+    // Event Listeners
+    $play.on('click', startGame);
+
+    $submit.on('click', function() {
+        const correct = quiz.calculateScore();
+        const total = quiz.characters.length;
+        $score.html(`You answered ${correct}/${total} questions correctly. No spoilers.`);
+        endGame();
     });
-
 };

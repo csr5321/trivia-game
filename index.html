@@ -1,33 +1,57 @@
-<!doctype html>
-<html class="no-js" lang="en">
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>GOT Trivia!</title>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="assets/css/style.css">
+    <title>Game of Thrones Quiz</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="style.css" rel="stylesheet">
 </head>
-
-<body>
-    <div class="container">
-        <div id="timer">00:00</div>
+<body class="bg-dark text-light">
+    <div id="timer" class="fixed-top bg-dark text-light py-3 text-center">
+        00:00
     </div>
-    <div class="container">
-        <h2 class="quizHeader">Stress Test</h2>
-        <div>
-            <button id="play">Press to Play!</button>
-            <div class="container">
-                <div class="row">
-                    <div id="quizCard"></div>
+
+    <div class="container mt-5 pt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card bg-dark text-light border-secondary">
+                    <div class="card-header">
+                        <h2 class="text-center mb-0">Game of Thrones Quiz</h2>
+                    </div>
+                    <div class="card-body">
+                        <!-- Play Button -->
+                        <div id="play" class="text-center mb-4">
+                            <button class="btn btn-danger btn-lg">Press to Play!</button>
+                        </div>
+
+                        <!-- Quiz Questions -->
+                        <div id="quizCard" class="mb-4">
+                            <!-- Questions will be populated by JavaScript -->
+                        </div>
+
+                        <!-- Score Display -->
+                        <div id="score" class="alert alert-info text-center d-none">
+                            <!-- Score will be populated by JavaScript -->
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div id="submit" class="text-center">
+                            <button class="btn btn-warning btn-lg">
+                                SUBMIT: (Are You Sure You Want To Know?)
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="container" id="score"></div>
-            <button id="submit">SUBMIT: (Are You Sure You Want To Know?)</button>
-            <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
-            <script type="text/javascript" src="assets/javascript/app.js"></script>
-            <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1" crossorigin="anonymous"></script>
-</body>
+        </div>
+    </div>
 
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
 </html>
